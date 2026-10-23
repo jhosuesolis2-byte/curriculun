@@ -1,0 +1,58 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.font-serif-cv {
+  font-family: 'Merriweather', serif;
+}
+
+/* Reglas de impresión */
+@media print {
+  body {
+    background-color: white !important;
+    color: black !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  .page-break {
+    page-break-inside: avoid;
+  }
+}
+
+/* Color Themes */
+.theme-navy { --accent-color: #1e3a8a; --accent-light: #eff6ff; --accent-border: #bfdbfe; }
+.theme-emerald { --accent-color: #065f46; --accent-light: #ecfdf5; --accent-border: #a7f3d0; }
+.theme-burgundy { --accent-color: #831843; --accent-light: #fdf2f8; --accent-border: #fbcfe8; }
+.theme-slate { --accent-color: #334155; --accent-light: #f8fafc; --accent-border: #e2e8f0; }
+.theme-purple { --accent-color: #581c87; --accent-light: #faf5ff; --accent-border: #e9d5ff; }
+
+.cv-accent-text { color: var(--accent-color); }
+.cv-accent-bg { background-color: var(--accent-color); }
+.cv-accent-light-bg { background-color: var(--accent-light); }
+.cv-accent-border { border-color: var(--accent-color); }
+
+/* Ajuste Mobile First para vista previa del CV */
+@media (max-width: 640px) {
+  .print-area {
+    font-size: 0.95rem;
+  }
+}
