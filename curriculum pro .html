@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creador de Currículum Vitae Rápido</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            appDark: '#0f172a',
+            appCard: '#1e293b',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .font-serif-cv {
+      font-family: 'Merriweather', serif;
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background-color: white !important;
+        color: black !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      
+      .no-print {
+        display: none !important;
+      }
+
+      .print-area {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      /* Page margins for print */
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
+
+      .page-break {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Theme Accent Colors for Preview */
+    .theme-navy { --accent-color: #1e3a8a; --accent-light: #eff6ff; --accent-border: #bfdbfe; }
+    .theme-emerald { --accent-color: #065f46; --accent-light: #ecfdf5; --accent-border: #a7f3d0; }
+    .theme-burgundy { --accent-color: #831843; --accent-light: #fdf2f8; --accent-border: #fbcfe8; }
+    .theme-slate { --accent-color: #334155; --accent-light: #f8fafc; --accent-border: #e2e8f0; }
+    .theme-purple { --accent-color: #581c87; --accent-light: #faf5ff; --accent-border: #e9d5ff; }
+
+    .cv-accent-text { color: var(--accent-color); }
+    .cv-accent-bg { background-color: var(--accent-color); }
+    .cv-accent-light-bg { background-color: var(--accent-light); }
+    .cv-accent-border { border-color: var(--accent-color); }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Header Section (no-print) -->
+  <header class="no-print bg-slate-900/90 border-b border-slate-800 sticky top-0 z-50 backdrop-blur">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+      
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 text-white p-2 rounded-xl shadow-lg">
+          <i class="fa-solid fa-file-invoice text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-white leading-tight">AS Profesional</h1>
+          <p class="text-xs text-slate-400">Crea tu curriculun como un profecional</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2 flex-wrap">
+        <button onclick="cargarEjemplo()" class="text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i> Datos de Ejemplo
+        </button>
+        <button onclick="limpiarTodo()" class="text-xs font-semibold bg-slate-800 hover:bg-rose-950/40 text-rose-400 border border-slate-700 hover:border-rose-800 px-3 py-2 rounded-lg transition flex items-center gap-1.5">
+          <i class="fa-solid fa-trash-can"></i> Limpiar
+        </button>
+        <button onclick="imprimirCV()" class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition flex items-center gap-2 shadow-lg shadow-blue-600/30">
+          <i class="fa-solid fa-print"></i> Descargar PDF / Imprimir
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT PANEL: Editor Form (no-print) -->
+    <section class="no-print lg:col-span-6 space-y-6 overflow-y-auto max-h-[calc(100vh-100px)] pr-1">
+      
+      <!-- Estilo y Color -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-4 shadow-md">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-palette text-blue-400"></i> Estilo y Color de Acento
+        </h2>
+        <div class="flex items-center gap-3 flex-wrap">
+          <button onclick="cambiarTema('theme-navy')" class="w-8 h-8 rounded-full bg-blue-900 border-2 border-white/20 hover:scale-110 transition shadow" title="Azul Marino"></button>
+          <button onclick="cambiarTema('theme-emerald')" class="w-8 h-8 rounded-full bg-emerald-800 border-2 border-white/20 hover:scale-110 transition shadow" title="Verde Esmeralda"></button>
+          <button onclick="cambiarTema('theme-burgundy')" class="w-8 h-8 rounded-full bg-pink-900 border-2 border-white/20 hover:scale-110 transition shadow" title="Vino / Borgoña"></button>
+          <button onclick="cambiarTema('theme-slate')" class="w-8 h-8 rounded-full bg-slate-700 border-2 border-white/20 hover:scale-110 transition shadow" title="Gris Pizarra"></button>
+          <button onclick="cambiarTema('theme-purple')" class="w-8 h-8 rounded-full bg-purple-900 border-2 border-white/20 hover:scale-110 transition shadow" title="Púrpura Elegante"></button>
+        </div>
+      </div>
+
+      <!-- Form Section 1: Datos Personales -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md">
+        <h2 class="text-sm font-bold text-slate-200 mb-4 flex items-center gap-2 border-b border-slate-700 pb-2">
+          <i class="fa-solid fa-user text-blue-400"></i> Información Personal
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Nombre Completo</label>
+            <input type="text" id="inNombre" oninput="actualizarCV()" placeholder="Ej: maria" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Título Profesional</label>
+            <input type="text" id="inTitulo" oninput="actualizarCV()" placeholder="Ej: Desarrollador Web" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Correo Electrónico</label>
+            <input type="email" id="inEmail" oninput="actualizarCV()" placeholder="maria@ejemplo.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Teléfono</label>
+            <input type="text" id="inTelefono" oninput="actualizarCV()" placeholder="+593 00 000 0000" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Ubicación (Ciudad, País)</label>
+            <input type="text" id="inUbicacion" oninput="actualizarCV()" placeholder="Guayaquil, Ecuador" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Sitio Web / LinkedIn</label>
+            <input type="text" id="inWeb" oninput="actualizarCV()" placeholder="linkedin.com/in/usuario" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none">
+          </div>
+
+          <!-- Campo para Foto de Perfil -->
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Foto de Perfil</label>
+            <div class="flex items-center gap-2">
+              <input type="file" id="inFoto" accept="image/*" onchange="cargarImagen(event)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-1.5 text-xs text-white file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500">
+              <button type="button" onclick="borrarFoto()" class="text-xs bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 px-3 py-2 rounded-lg font-semibold transition flex items-center gap-1 shrink-0" title="Borrar foto">
+                <i class="fa-solid fa-trash-can"></i> Quitar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-3">
+          <label class="block text-xs font-medium text-slate-400 mb-1">Perfil / Resumen Profesional</label>
+          <textarea id="inPerfil" oninput="actualizarCV()" rows="3" placeholder="Breve descripción..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none text-sm"></textarea>
+        </div>
+      </div>
+
+      <!-- Form Section 2: Experiencia Laboral -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+          <h2 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-briefcase text-blue-400"></i> Experiencia Laboral
+          </h2>
+          <button onclick="agregarExperiencia()" class="text-xs bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg font-semibold transition">
+            + Añadir
+          </button>
+        </div>
+        <div id="listaExperiencia" class="space-y-4"></div>
+      </div>
+
+      <!-- Form Section 3: Educación -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+          <h2 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-blue-400"></i> Educación
+          </h2>
+          <button onclick="agregarEducacion()" class="text-xs bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg font-semibold transition">
+            + Añadir
+          </button>
+        </div>
+        <div id="listaEducacion" class="space-y-4"></div>
+      </div>
+
+      <!-- Form Section 4: Habilidades e Idiomas -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-code text-blue-400 mr-1"></i> Habilidades (Separadas por coma)
+          </label>
+          <textarea id="inHabilidades" oninput="actualizarCV()" rows="3" placeholder="HTML5, JavaScript, CSS3..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none text-xs"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+            <i class="fa-solid fa-language text-blue-400 mr-1"></i> Idiomas (Separados por coma)
+          </label>
+          <textarea id="inIdiomas" oninput="actualizarCV()" rows="3" placeholder="Español (Nativo), Inglés..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none text-xs"></textarea>
+        </div>
+      </div>
+
+    </section> <!-- AQUÍ SE CIERRA CORRECTAMENTE EL PANEL IZQUIERDO -->
+
+    <!-- RIGHT PANEL: Live CV Preview -->
+    <section class="lg:col-span-6 flex justify-center items-start">
+      
+      <!-- A4 Page Container -->
+      <div id="cvDocument" class="print-area theme-navy w-full bg-white text-slate-800 rounded-xl shadow-2xl p-8 md:p-10 border border-slate-200 transition-all min-h-[842px] flex flex-col justify-between">
+        
+        <!-- Header / Name Block -->
+        <div>
+          <div class="border-b-2 cv-accent-border pb-5 mb-6 flex justify-between items-start gap-4">
+            <div>
+              <h1 id="outNombre" class="text-3xl md:text-4xl font-black cv-accent-text tracking-tight uppercase">
+                Tu Nombre
+              </h1>
+              <p id="outTitulo" class="text-base md:text-lg font-semibold text-slate-600 mt-1">
+                Tu Título Profesional
+              </p>
+
+              <!-- Contact Info Strip -->
+              <div class="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600 mt-3 font-medium">
+                <span id="outEmailWrap" class="flex items-center gap-1.5"><i class="fa-solid fa-envelope cv-accent-text"></i> <span id="outEmail">email@ejemplo.com</span></span>
+                <span id="outTelefonoWrap" class="flex items-center gap-1.5"><i class="fa-solid fa-phone cv-accent-text"></i> <span id="outTelefono">+34 000 000 000</span></span>
+                <span id="outUbicacionWrap" class="flex items-center gap-1.5"><i class="fa-solid fa-location-dot cv-accent-text"></i> <span id="outUbicacion">Ciudad, País</span></span>
+                <span id="outWebWrap" class="flex items-center gap-1.5"><i class="fa-solid fa-globe cv-accent-text"></i> <span id="outWeb">sitio.com</span></span>
+              </div>
+            </div>
+
+            <!-- Contenedor de la Imagen a la derecha -->
+            <div id="outFotoWrap" class="hidden shrink-0">
+              <img id="outFoto" src="" alt="Foto de perfil" class="w-24 h-24 object-cover rounded-lg border-2 cv-accent-border shadow-sm">
+            </div>
+          </div>
+
+          <!-- Perfil Profesional -->
+          <div id="outPerfilSec" class="mb-6">
+            <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-user-tie"></i> Perfil Profesional
+            </h2>
+            <p id="outPerfil" class="text-xs md:text-sm text-slate-700 leading-relaxed">
+              Resumen sobre tu trayectoria laboral, habilidades clave y logros profesionales destacados.
+            </p>
+          </div>
+
+          <!-- Experiencia Laboral -->
+          <div id="outExperienciaSec" class="mb-6">
+            <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-briefcase"></i> Experiencia Laboral
+            </h2>
+            <div id="outExperienciaLista" class="space-y-4"></div>
+          </div>
+
+          <!-- Educación -->
+          <div id="outEducacionSec" class="mb-6">
+            <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-graduation-cap"></i> Educación y Formación
+            </h2>
+            <div id="outEducacionLista" class="space-y-3"></div>
+          </div>
+
+          <!-- Habilidades e Idiomas -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div id="outHabilidadesSec">
+              <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-star"></i> Habilidades Clave
+              </h2>
+              <div id="outHabilidadesLista" class="flex flex-wrap gap-1.5 pt-1"></div>
+            </div>
+
+            <div id="outIdiomasSec">
+              <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-language"></i> Idiomas
+              </h2>
+              <ul id="outIdiomasLista" class="text-xs text-slate-700 space-y-1 pt-1 list-disc list-inside"></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Footer -->
+        <div class="mt-8 pt-4 border-t border-slate-100 text-[10px] text-slate-400 text-center uppercase tracking-widest">
+          Curriculum Vitae
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Arreglos de items dinámicos
+    let experiencias = [];
+    let educaciones = [];
+
+    // Cambiar color de acento
+    function cambiarTema(nombreTema) {
+      const doc = document.getElementById('cvDocument');
+      doc.className = `print-area ${nombreTema} w-full bg-white text-slate-800 rounded-xl shadow-2xl p-8 md:p-10 border border-slate-200 transition-all min-h-[842px] flex flex-col justify-between`;
+    }
+
+    // Agregar nuevo ítem de Experiencia
+    function agregarExperiencia(puesto = '', empresa = '', periodo = '', desc = '') {
+      const id = Date.now() + Math.random();
+      experiencias.push({ id, puesto, empresa, periodo, desc });
+      renderFormExperiencia();
+      actualizarCV();
+    }
+
+    function eliminarExperiencia(id) {
+      experiencias = experiencias.filter(e => e.id !== id);
+      renderFormExperiencia();
+      actualizarCV();
+    }
+
+    function renderFormExperiencia() {
+      const contenedor = document.getElementById('listaExperiencia');
+      contenedor.innerHTML = '';
+
+      experiencias.forEach((exp, index) => {
+        const item = document.createElement('div');
+        item.className = 'bg-slate-900 border border-slate-700/70 p-3 rounded-xl space-y-2 relative';
+        item.innerHTML = `
+          <button onclick="eliminarExperiencia(${exp.id})" class="absolute top-2 right-2 text-xs text-rose-400 hover:text-rose-300 p-1" title="Eliminar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <input type="text" value="${exp.puesto}" oninput="actualizarExpVal(${exp.id}, 'puesto', this.value)" placeholder="Puesto / Cargo" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+            <input type="text" value="${exp.empresa}" oninput="actualizarExpVal(${exp.id}, 'empresa', this.value)" placeholder="Empresa" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+          </div>
+          <input type="text" value="${exp.periodo}" oninput="actualizarExpVal(${exp.id}, 'periodo', this.value)" placeholder="Periodo (Ej: 2021 - Presente)" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white">
+          <textarea oninput="actualizarExpVal(${exp.id}, 'desc', this.value)" rows="2" placeholder="Responsabilidades y logros..." class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white">${exp.desc}</textarea>
+        `;
+        contenedor.appendChild(item);
+      });
+    }
+
+    function actualizarExpVal(id, campo, valor) {
+      const exp = experiencias.find(e => e.id === id);
+      if (exp) exp[campo] = valor;
+      actualizarCV();
+    }
+
+    // Agregar nuevo ítem de Educación
+    function agregarEducacion(titulo = '', centro = '', periodo = '') {
+      const id = Date.now() + Math.random();
+      educaciones.push({ id, titulo, centro, periodo });
+      renderFormEducacion();
+      actualizarCV();
+    }
+
+    function eliminarEducacion(id) {
+      educaciones = educaciones.filter(e => e.id !== id);
+      renderFormEducacion();
+      actualizarCV();
+    }
+
+    function renderFormEducacion() {
+      const contenedor = document.getElementById('listaEducacion');
+      contenedor.innerHTML = '';
+
+      educaciones.forEach((edu) => {
+        const item = document.createElement('div');
+        item.className = 'bg-slate-900 border border-slate-700/70 p-3 rounded-xl space-y-2 relative';
+        item.innerHTML = `
+          <button onclick="eliminarEducacion(${edu.id})" class="absolute top-2 right-2 text-xs text-rose-400 hover:text-rose-300 p-1" title="Eliminar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <input type="text" value="${edu.titulo}" oninput="actualizarEduVal(${edu.id}, 'titulo', this.value)" placeholder="Grado / Título" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+            <input type="text" value="${edu.centro}" oninput="actualizarEduVal(${edu.id}, 'centro', this.value)" placeholder="Institución / Universidad" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+          </div>
+          <input type="text" value="${edu.periodo}" oninput="actualizarEduVal(${edu.id}, 'periodo', this.value)" placeholder="Año (Ej: 2017 - 2021)" class="w-full bg-slate-800 border border-slate-700 rounded p-1.5 text-xs text-white">
+        `;
+        contenedor.appendChild(item);
+      });
+    }
+
+    function actualizarEduVal(id, campo, valor) {
+      const edu = educaciones.find(e => e.id === id);
+      if (edu) edu[campo] = valor;
+      actualizarCV();
+    }
+
+    // Actualización global del Preview en vivo
+    function actualizarCV() {
+      // Datos Personales
+      document.getElementById('outNombre').innerText = document.getElementById('inNombre').value || 'Tu Nombre';
+      document.getElementById('outTitulo').innerText = document.getElementById('inTitulo').value || 'Tu Título Profesional';
+      
+      const email = document.getElementById('inEmail').value;
+      document.getElementById('outEmail').innerText = email;
+      document.getElementById('outEmailWrap').style.display = email ? 'flex' : 'none';
+
+      const tel = document.getElementById('inTelefono').value;
+      document.getElementById('outTelefono').innerText = tel;
+      document.getElementById('outTelefonoWrap').style.display = tel ? 'flex' : 'none';
+
+      const ubi = document.getElementById('inUbicacion').value;
+      document.getElementById('outUbicacion').innerText = ubi;
+      document.getElementById('outUbicacionWrap').style.display = ubi ? 'flex' : 'none';
+
+      const web = document.getElementById('inWeb').value;
+      document.getElementById('outWeb').innerText = web;
+      document.getElementById('outWebWrap').style.display = web ? 'flex' : 'none';
+
+      const perfil = document.getElementById('inPerfil').value;
+      document.getElementById('outPerfil').innerText = perfil;
+      document.getElementById('outPerfilSec').style.display = perfil ? 'block' : 'none';
+
+      // Experiencia Laboral
+      const outExp = document.getElementById('outExperienciaLista');
+      outExp.innerHTML = '';
+      if (experiencias.length === 0) {
+        document.getElementById('outExperienciaSec').style.display = 'none';
+      } else {
+        document.getElementById('outExperienciaSec').style.display = 'block';
+        experiencias.forEach(exp => {
+          if (exp.puesto || exp.empresa) {
+            const div = document.createElement('div');
+            div.className = 'page-break';
+            div.innerHTML = `
+              <div class="flex justify-between items-baseline">
+                <h3 class="text-xs md:text-sm font-bold text-slate-800">${exp.puesto}</h3>
+                <span class="text-[11px] font-semibold text-slate-500">${exp.periodo}</span>
+              </div>
+              <div class="text-xs font-semibold cv-accent-text mb-1">${exp.empresa}</div>
+              <p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${exp.desc}</p>
+            `;
+            outExp.appendChild(div);
+          }
+        });
+      }
+
+      // Educación
+      const outEdu = document.getElementById('outEducacionLista');
+      outEdu.innerHTML = '';
+      if (educaciones.length === 0) {
+        document.getElementById('outEducacionSec').style.display = 'none';
+      } else {
+        document.getElementById('outEducacionSec').style.display = 'block';
+        educaciones.forEach(edu => {
+          if (edu.titulo || edu.centro) {
+            const div = document.createElement('div');
+            div.className = 'flex justify-between items-baseline page-break';
+            div.innerHTML = `
+              <div>
+                <h3 class="text-xs md:text-sm font-bold text-slate-800">${edu.titulo}</h3>
+                <div class="text-xs text-slate-600">${edu.centro}</div>
+              </div>
+              <span class="text-[11px] font-semibold text-slate-500">${edu.periodo}</span>
+            `;
+            outEdu.appendChild(div);
+          }
+        });
+      }
+
+      // Habilidades (Pills)
+      const habsText = document.getElementById('inHabilidades').value;
+      const outHabs = document.getElementById('outHabilidadesLista');
+      outHabs.innerHTML = '';
+      if (!habsText.trim()) {
+        document.getElementById('outHabilidadesSec').style.display = 'none';
+      } else {
+        document.getElementById('outHabilidadesSec').style.display = 'block';
+        habsText.split(',').forEach(h => {
+          const item = h.trim();
+          if (item) {
+            const span = document.createElement('span');
+            span.className = 'text-[11px] px-2 py-0.5 rounded font-medium border cv-accent-light-bg cv-accent-text border-slate-200';
+            span.innerText = item;
+            outHabs.appendChild(span);
+          }
+        });
+      }
+
+      // Idiomas
+      const idisText = document.getElementById('inIdiomas').value;
+      const outIdis = document.getElementById('outIdiomasLista');
+      outIdis.innerHTML = '';
+      if (!idisText.trim()) {
+        document.getElementById('outIdiomasSec').style.display = 'none';
+      } else {
+        document.getElementById('outIdiomasSec').style.display = 'block';
+        idisText.split(',').forEach(i => {
+          const item = i.trim();
+          if (item) {
+            const li = document.createElement('li');
+            li.innerText = item;
+            outIdis.appendChild(li);
+          }
+        });
+      }
+    }
+
+    // Cargar Datos de Ejemplo
+    function cargarEjemplo() {
+      document.getElementById('inNombre').value = 'tu nombre';
+      document.getElementById('inTitulo').value = 'Sistemas';
+      document.getElementById('inEmail').value = 'ejemplo@ejemplo.com';
+      document.getElementById('inTelefono').value = '+593 00 000 0000';
+      document.getElementById('inUbicacion').value = 'guayaquil, guayas ';
+      document.getElementById('inWeb').value = 'linkedin.com';
+      document.getElementById('inPerfil').value = 'Profesional en sistemas meses de experiencia en un empresa privada de reciclaje'
+      experiencias = [
+        {
+          id: 1,
+          puesto: 'programador',
+          empresa: 'EMPRESA PRIVADA',
+          periodo: '2026-presente"',
+          desc: '• Liderazgo del rediseño de la plataforma web principales \n• Creación del sistema de diseño'
+        },
+        {
+          id: 2,
+          puesto: 'Soporte Tecnico ',
+          empresa: 'EMPRSA PRIVADA',
+          periodo: '2026-presente',
+          desc: '•soporte de maquinas \n• mantenimiento a servidores .'
+        }
+      ];
+
+      educaciones = [
+        {
+          id: 1,
+          titulo: 'desarrollo de software',
+          centro: 'Coleguio Nacional Privado',
+          periodo: '2025-2026'
+        }
+      ];
+
+      document.getElementById('inHabilidades').value = 'soporte tecnico, HTML5, JavaScript, css, Git';
+      document.getElementById('inIdiomas').value = 'Español (Nativo), Inglés (intermedio/puedo mejorar ),';
+
+      renderFormExperiencia();
+      renderFormEducacion();
+      actualizarCV();
+    }
+
+    // Limpiar todos los campos
+    function limpiarTodo() {
+      document.getElementById('inNombre').value = '';
+      document.getElementById('inTitulo').value = '';
+      document.getElementById('inEmail').value = '';
+      document.getElementById('inTelefono').value = '';
+      document.getElementById('inUbicacion').value = '';
+      document.getElementById('inWeb').value = '';
+      document.getElementById('inPerfil').value = '';
+      document.getElementById('inHabilidades').value = '';
+      document.getElementById('inIdiomas').value = '';
+
+      experiencias = [];
+      educaciones = [];
+
+      renderFormExperiencia();
+      renderFormEducacion();
+      actualizarCV();
+    }
+
+    // Función para imprimir/descargar PDF
+    function imprimirCV() {
+      window.print();
+    }
+
+    // Inicializar con datos de ejemplo
+    window.onload = function() {
+      cargarEjemplo();
+    };
+    // Función para manejar la carga de la imagen
+    function cargarImagen(event) {
+      const archivo = event.target.files[0];
+      if (archivo) {
+        const lector = new FileReader();
+        lector.onload = function(e) {
+          const imgElement = document.getElementById('outFoto');
+          const wrapElement = document.getElementById('outFotoWrap');
+          imgElement.src = e.target.result;
+          wrapElement.classList.remove('hidden');
+        }
+        lector.readAsDataURL(archivo);
+      }
+    }
+    // Limpiar todos los campos
+    function limpiarTodo() {
+      document.getElementById('inNombre').value = '';
+      document.getElementById('inTitulo').value = '';
+      document.getElementById('inEmail').value = '';
+      document.getElementById('inTelefono').value = '';
+      document.getElementById('inUbicacion').value = '';
+      document.getElementById('inWeb').value = '';
+      document.getElementById('inPerfil').value = '';
+      document.getElementById('inHabilidades').value = '';
+      document.getElementById('inIdiomas').value = '';
+
+      experiencias = [];
+      educaciones = [];
+
+      renderFormExperiencia();
+      renderFormEducacion();
+      actualizarCV();
+    }
+    
+    // Función para cargar la imagen seleccionada por el usuario
+    function cargarImagen(event) {
+      const archivo = event.target.files[0];
+      if (archivo) {
+        const lector = new FileReader();
+        lector.onload = function(e) {
+          const imgElement = document.getElementById('outFoto');
+          const wrapElement = document.getElementById('outFotoWrap');
+          
+          imgElement.src = e.target.result;
+          wrapElement.classList.remove('hidden'); // Muestra el contenedor en el CV
+        }
+        lector.readAsDataURL(archivo);
+      }
+    }
+
+    // Función para quitar/borrar la foto
+    function borrarFoto() {
+      const imgElement = document.getElementById('outFoto');
+      const wrapElement = document.getElementById('outFotoWrap');
+      const inputElement = document.getElementById('inFoto');
+
+      // 1. Oculta el contenedor de la imagen en la vista previa del CV
+      if (wrapElement) {
+        wrapElement.classList.add('hidden');
+      }
+
+      // 2. Borra la fuente de la imagen
+      if (imgElement) {
+        imgElement.src = '';
+      }
+
+      // 3. Reinicia el campo selector de archivo (input file)
+      if (inputElement) {
+        inputElement.value = '';
+      }
+    }
+    
+
+  
+  </script>
+</body>
+</html>
+
+
