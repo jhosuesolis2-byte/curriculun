@@ -1,6 +1,7 @@
 // Arreglos de items dinámicos
 let experiencias = [];
 let educaciones = [];
+let referencias = [];
 
 // Cambiar color de acento
 function cambiarTema(nombreTema) {
@@ -88,6 +89,51 @@ function renderFormEducacion() {
 function actualizarEduVal(id, campo, valor) {
   const edu = educaciones.find(e => e.id === id);
   if (edu) edu[campo] = valor;
+  actualizarCV();
+}
+
+// Agregar nuevo ítem de Referencia
+function agregarReferencia(nombre = '', cargo = '', empresa = '', contacto = '') {
+  const id = Date.now() + Math.random();
+  referencias.push({ id, nombre, cargo, empresa, contacto });
+  renderFormReferencias();
+  actualizarCV();
+}
+
+function eliminarReferencia(id) {
+  referencias = referencias.filter(r => r.id !== id);
+  renderFormReferencias();
+  actualizarCV();
+}
+
+function renderFormReferencias() {
+  const contenedor = document.getElementById('listaReferencias');
+  if (!contenedor) return;
+  contenedor.innerHTML = '';
+
+  referencias.forEach((ref) => {
+    const item = document.createElement('div');
+    item.className = 'bg-slate-900 border border-slate-700/70 p-3 rounded-xl space-y-2 relative';
+    item.innerHTML = `
+      <button onclick="eliminarReferencia(${ref.id})" class="absolute top-2 right-2 text-xs text-rose-400 hover:text-rose-300 p-1" title="Eliminar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <input type="text" value="${ref.nombre}" oninput="actualizarRefVal(${ref.id}, 'nombre', this.value)" placeholder="Nombre de la referencia" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+        <input type="text" value="${ref.cargo}" oninput="actualizarRefVal(${ref.id}, 'cargo', this.value)" placeholder="Cargo / Relación" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+      </div>
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <input type="text" value="${ref.empresa}" oninput="actualizarRefVal(${ref.id}, 'empresa', this.value)" placeholder="Empresa" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+        <input type="text" value="${ref.contacto}" oninput="actualizarRefVal(${ref.id}, 'contacto', this.value)" placeholder="Teléfono o Email" class="bg-slate-800 border border-slate-700 rounded p-1.5 text-white">
+      </div>
+    `;
+    contenedor.appendChild(item);
+  });
+}
+
+function actualizarRefVal(id, campo, valor) {
+  const ref = referencias.find(r => r.id === id);
+  if (ref) ref[campo] = valor;
   actualizarCV();
 }
 
@@ -199,6 +245,48 @@ function actualizarCV() {
       }
     });
   }
+
+  // Redes Sociales
+  const redesText = document.getElementById('inRedes').value;
+  const outRedes = document.getElementById('outRedesLista');
+  const outRedesSec = document.getElementById('outRedesSec');
+  outRedes.innerHTML = '';
+  if (!redesText.trim()) {
+    outRedesSec.style.display = 'none';
+  } else {
+    outRedesSec.style.display = 'block';
+    redesText.split(',').forEach(r => {
+      const item = r.trim();
+      if (item) {
+        const span = document.createElement('span');
+        span.className = 'text-xs text-slate-700 bg-slate-100 px-2 py-1 rounded border border-slate-200';
+        span.innerText = item;
+        outRedes.appendChild(span);
+      }
+    });
+  }
+
+  // Referencias
+  const outRef = document.getElementById('outReferenciasLista');
+  const outRefSec = document.getElementById('outReferenciasSec');
+  outRef.innerHTML = '';
+  if (referencias.length === 0) {
+    outRefSec.style.display = 'none';
+  } else {
+    outRefSec.style.display = 'block';
+    referencias.forEach(ref => {
+      if (ref.nombre || ref.cargo) {
+        const div = document.createElement('div');
+        div.className = 'text-xs text-slate-700 space-y-0.5 bg-slate-50 p-2.5 rounded border border-slate-200';
+        div.innerHTML = `
+          <p class="font-bold text-slate-800">${ref.nombre}</p>
+          <p class="text-slate-600">${ref.cargo} - ${ref.empresa}</p>
+          <p class="text-slate-500">${ref.contacto}</p>
+        `;
+        outRef.appendChild(div);
+      }
+    });
+  }
 }
 
 // Cargar Datos de Ejemplo
@@ -210,6 +298,7 @@ function cargarEjemplo() {
   document.getElementById('inUbicacion').value = 'Guayaquil, Guayas';
   document.getElementById('inWeb').value = 'linkedin.com';
   document.getElementById('inPerfil').value = 'Profesional en sistemas con experiencia en soporte y desarrollo.';
+  document.getElementById('inRedes').value = 'GitHub: github.com/usuario, Portafolio: miweb.com';
   
   experiencias = [
     {
@@ -217,14 +306,14 @@ function cargarEjemplo() {
       puesto: 'Programador',
       empresa: 'Empresa Privada',
       periodo: '2026 - Presente',
-      desc: '• Liderazgo del rediseño de la plataforma web principal.\n• Creación del sistema de diseño.'
+      desc: '• Liderazgo del rediseño de la plataforma web principal.\nCreación del sistema de diseño.'
     },
     {
       id: 2,
       puesto: 'Soporte Técnico',
       empresa: 'Empresa Privada',
       periodo: '2026 - Presente',
-      desc: '• Soporte de máquinas.\n• Mantenimiento a servidores.'
+      desc: '• Soporte de máquinas.\nMantenimiento a servidores.'
     }
   ];
 
@@ -237,11 +326,22 @@ function cargarEjemplo() {
     }
   ];
 
+  referencias = [
+    {
+      id: 1,
+      nombre: 'Ing. Carlos Pérez',
+      cargo: 'Jefe de Sistemas',
+      empresa: 'Tech Solutions',
+      contacto: '+593 98 123 4567'
+    }
+  ];
+
   document.getElementById('inHabilidades').value = 'Soporte Técnico, HTML5, JavaScript, CSS, Git';
   document.getElementById('inIdiomas').value = 'Español (Nativo), Inglés (Intermedio)';
 
   renderFormExperiencia();
   renderFormEducacion();
+  renderFormReferencias();
   actualizarCV();
 }
 
@@ -256,13 +356,16 @@ function limpiarTodo() {
   document.getElementById('inPerfil').value = '';
   document.getElementById('inHabilidades').value = '';
   document.getElementById('inIdiomas').value = '';
+  document.getElementById('inRedes').value = '';
 
   experiencias = [];
   educaciones = [];
+  referencias = [];
 
   borrarFoto();
   renderFormExperiencia();
   renderFormEducacion();
+  renderFormReferencias();
   actualizarCV();
 }
 
@@ -302,8 +405,5 @@ function borrarFoto() {
     inputElement.value = '';
   }
 }
-
-// Inicializar con datos de ejemplo al cargar la página
-window.onload = function() {
-  cargarEjemplo();
-};
+// Cargar los datos de ejemplo automáticamente al abrir la página
+cargarEjemplo();

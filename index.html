@@ -24,11 +24,9 @@
   <!-- Google Fonts: Inter & Roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,300&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
 
-  <!-- Header Section (no-print) -->
   <!-- Header Section (no-print) -->
   <header class="no-print bg-slate-900 border-b border-slate-800 w-full">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3">
@@ -57,11 +55,11 @@
         </button>
       </div>
 
-     </div>
+    </div>
   </header>
 
-       <!-- Main Container -->
-     <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+  <!-- Main Container -->
+  <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
     <!-- LEFT PANEL: Editor Form (no-print) -->
     <section class="no-print lg:col-span-6 space-y-6">
@@ -171,7 +169,31 @@
         </div>
       </div>
 
-    </section> <!-- AQUÍ SE CIERRA CORRECTAMENTE EL PANEL IZQUIERDO -->
+      <!-- Formulario: Redes Sociales adicionales -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md">
+        <h2 class="text-sm font-bold text-slate-200 mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">
+          <i class="fa-solid fa-share-nodes text-blue-400"></i> Redes Sociales / Enlaces
+        </h2>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Redes (Separadas por coma)</label>
+          <input type="text" id="inRedes" oninput="actualizarCV()" placeholder="GitHub: github.com/usuario, Portafolio: miweb.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-white focus:border-blue-500 focus:outline-none text-xs">
+        </div>
+      </div>
+
+      <!-- Formulario: Referencias -->
+      <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-5 shadow-md">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+          <h2 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+            <i class="fa-solid fa-address-book text-blue-400"></i> Referencias
+          </h2>
+          <button onclick="agregarReferencia()" class="text-xs bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg font-semibold transition">
+            + Añadir
+          </button>
+        </div>
+        <div id="listaReferencias" class="space-y-4"></div>
+      </div>
+
+    </section>
 
     <!-- RIGHT PANEL: Live CV Preview -->
     <section class="lg:col-span-6 flex justify-center items-start">
@@ -232,7 +254,7 @@
           </div>
 
           <!-- Habilidades e Idiomas -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div id="outHabilidadesSec">
               <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-star"></i> Habilidades Clave
@@ -247,6 +269,23 @@
               <ul id="outIdiomasLista" class="text-xs text-slate-700 space-y-1 pt-1 list-disc list-inside"></ul>
             </div>
           </div>
+
+          <!-- Redes Sociales en la hoja -->
+          <div id="outRedesSec" class="mb-6 hidden">
+            <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-share-nodes"></i> Enlaces y Redes
+            </h2>
+            <div id="outRedesLista" class="flex flex-wrap gap-2 pt-1 text-xs text-slate-700"></div>
+          </div>
+
+          <!-- Referencias en la hoja -->
+          <div id="outReferenciasSec" class="mb-6 hidden">
+            <h2 class="text-xs font-bold uppercase tracking-widest cv-accent-text border-b border-slate-200 pb-1 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-address-book"></i> Referencias
+            </h2>
+            <div id="outReferenciasLista" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+          </div>
+
         </div>
 
         <!-- Document Footer -->
@@ -256,14 +295,10 @@
 
       </div>
 
-
     </section>
 
   </div>
 
   <script src="script.js"></script>
-</script>
 </body>
 </html>
-
-
